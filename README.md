@@ -1,8 +1,15 @@
 # CTI Agent 2
 
-CTI Agent 2 is a local Cyber Threat Intelligence platform for IOC triage, source enrichment, MITRE ATT&CK mapping, executive/operations/technical reporting, and automated case workflow management.
+![Python](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-Local%20API-009688?logo=fastapi&logoColor=white)
+![MITRE ATT&CK](https://img.shields.io/badge/MITRE-ATT%26CK-red)
+![Status](https://img.shields.io/badge/Status-Portfolio%20Project-blue)
+
+CTI Agent 2 is a local Cyber Threat Intelligence platform for IOC triage, multi-source enrichment, MITRE ATT&CK mapping, executive/operations/technical reporting, and automated case workflow management.
 
 It is designed to help analysts quickly assess indicators of compromise, understand source reputation, map findings to MITRE ATT&CK, generate professional reports, and manage investigation cases locally.
+
+> This project runs locally. API keys, analysis data, reports, and case workflow records are stored on the user's machine.
 
 ## Screenshots
 
@@ -25,7 +32,7 @@ It is designed to help analysts quickly assess indicators of compromise, underst
 
 - IOC intake for IPs, domains, URLs, hashes, and emails.
 - IOC normalization for `hxxp`, `[.]`, duplicated values, and IP:port inputs.
-- Enrichment with VirusTotal, MalwareBazaar, AbuseIPDB, URLScan, AlienVault OTX, and optional OpenAI summaries.
+- Multi-source enrichment with VirusTotal, MalwareBazaar, AbuseIPDB, URLScan, AlienVault OTX, and optional OpenAI summaries.
 - Source agreement, confidence scoring, severity scoring, and threat labels.
 - MITRE ATT&CK technique mapping and recommended response actions.
 - SOC-style bilingual interface with Arabic and English support.
@@ -35,6 +42,25 @@ It is designed to help analysts quickly assess indicators of compromise, underst
 - Case workflow with status, analyst notes, action checklist, and timeline.
 - Case report Excel export.
 - Local SQLite persistence for cases, analyses, indicators, tasks, and events.
+
+## Tech Stack
+
+- Python
+- FastAPI
+- Uvicorn
+- Pydantic
+- SQLite
+- OpenPyXL
+- HTML, CSS, JavaScript
+
+## Use Cases
+
+- IOC reputation triage.
+- Malware and phishing investigation support.
+- MITRE ATT&CK mapping for suspicious indicators.
+- SOC reporting for executive, operations, and technical audiences.
+- Local case workflow tracking for CTI investigations.
+- Portfolio demonstration for cyber threat intelligence and security automation.
 
 ## Quick Start
 
