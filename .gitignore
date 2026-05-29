@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+
+# Local runtime data
+data/cti_agent2.db
+data/cti_agent2.db-*
+data/*.db
+data/*.sqlite
+data/*.sqlite3
+data/analyses/*
+data/exports/*
+!data/.gitkeep
+!data/analyses/.gitkeep
+!data/exports/.gitkeep
+
+# Logs and generated reports
+*.log
+run_log.txt
+*.xlsx
+*.xls
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

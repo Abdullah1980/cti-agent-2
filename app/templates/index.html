@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ app_name }}</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="scene-grid"></div>
+    <header class="topbar">
+      <div class="brand-block">
+        <span class="eyebrow" data-i18n="eyebrow">منصة استخبارات التهديدات</span>
+        <h1>CTI Agent 2</h1>
+        <p data-i18n="heroText">تحليل مؤشرات الاختراق وربطها بـ MITRE ATT&CK مع تقارير تنفيذية وتشغيلية وتقنية.</p>
+      </div>
+      <div class="top-actions">
+        <div class="segmented" aria-label="Language">
+          <button id="langAr" class="active" type="button">AR</button>
+          <button id="langEn" type="button">EN</button>
+        </div>
+        <div class="status" id="status" data-i18n="checking">فحص الإعدادات...</div>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="panel input-panel">
+        <div class="section-title">
+          <h2 data-i18n="inputTitle">إدخال المؤشرات</h2>
+          <button id="sampleBtn" type="button" title="Sample" data-i18n="sample">مثال</button>
+        </div>
+        <label>
+          <span data-i18n="company">اسم الشركة</span>
+          <input id="companyName" value="الشركة" />
+        </label>
+        <label>
+          <span data-i18n="indicators">المؤشرات IOC</span>
+          <textarea id="indicators" rows="9"></textarea>
+        </label>
+        <label>
+          <span data-i18n="context">سياق إضافي</span>
+          <textarea id="context" rows="4"></textarea>
+        </label>
+        <div class="switch-row">
+          <span data-i18n="useOpenAI">استخدام OpenAI للتلخيص</span>
+          <input id="useOpenAI" type="checkbox" checked />
+        </div>
+        <button id="analyzeBtn" class="primary" type="button" data-i18n="analyze">بدء التحليل</button>
+        <p class="hint" id="message"></p>
+      </section>
+
+      <section class="workspace">
+        <nav class="page-nav" aria-label="Workspace navigation">
+          <button class="page-tab active" type="button" data-view-target="dashboard" data-i18n="navDashboard">Dashboard</button>
+          <button class="page-tab" type="button" data-view-target="results" data-i18n="navResults">Results</button>
+          <button class="page-tab" type="button" data-view-target="mitre" data-i18n="navMitre">MITRE</button>
+          <button class="page-tab" type="button" data-view-target="cases" data-i18n="navCases">Cases</button>
+          <button class="page-tab" type="button" data-view-target="history" data-i18n="navHistory">History</button>
+          <button class="page-tab" type="button" data-view-target="raw" data-i18n="navRaw">Raw Data</button>
+        </nav>
+
+        <div class="metrics view-page" data-view="dashboard">
+          <div class="metric">
+            <span data-i18n="totalIndicators">المؤشرات</span>
+            <strong id="total">0</strong>
+          </div>
+          <div class="metric">
+            <span data-i18n="avgRisk">متوسط الخطورة</span>
+            <strong id="avg">0</strong>
+          </div>
+          <div class="metric critical">
+            <span data-i18n="critical">حرج</span>
+            <strong id="critical">0</strong>
+          </div>
+          <div class="metric high">
+            <span data-i18n="high">عال</span>
+            <strong id="high">0</strong>
+          </div>
+        </div>
+
+        <section class="panel summaries view-page" data-view="dashboard">
+          <div class="section-title">
+            <h2 data-i18n="summaryTitle">ملخص التقارير</h2>
+            <a id="excelLink" class="download disabled" href="#" data-i18n="downloadExcel">تحميل Excel</a>
+          </div>
+          <div id="caseBanner" class="case-banner hidden"></div>
+          <div class="tabs">
+            <button class="tab active" data-tab="executive" data-i18n="executive">تنفيذي</button>
+            <button class="tab" data-tab="operations" data-i18n="operations">عمليات</button>
+            <button class="tab" data-tab="technical" data-i18n="technical">تقني</button>
+          </div>
+          <article id="summaryText" class="summary-text" data-i18n="emptySummary">ستظهر الملخصات هنا بعد التحليل.</article>
+        </section>
+
+        <section class="panel view-page hidden" data-view="results">
+          <h2 data-i18n="resultsTitle">نتائج المؤشرات</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th data-i18n="ioc">المؤشر</th>
+                  <th data-i18n="type">النوع</th>
+                  <th data-i18n="severity">الخطورة</th>
+                  <th data-i18n="confidence">الثقة</th>
+                  <th data-i18n="sources">المصادر</th>
+                  <th>MITRE</th>
+                </tr>
+              </thead>
+              <tbody id="resultsBody">
+                <tr><td colspan="6" class="empty" data-i18n="noResults">لا توجد نتائج بعد.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel view-page hidden" data-view="mitre">
+          <h2 data-i18n="mitreTitle">أهم تقنيات MITRE</h2>
+          <div id="mitreList" class="mitre-list empty" data-i18n="noData">لا توجد بيانات بعد.</div>
+        </section>
+
+        <section class="panel cases-panel view-page hidden" data-view="cases">
+          <div class="section-title">
+            <h2 data-i18n="casesTitle">Cases</h2>
+            <button id="refreshCasesBtn" type="button" data-i18n="refreshCases">Refresh</button>
+          </div>
+          <div class="cases-grid">
+            <div id="casesList" class="cases-list empty" data-i18n="noCases">No cases yet.</div>
+            <div id="caseDetail" class="case-detail empty" data-i18n="selectCase">Select a case to view details.</div>
+          </div>
+        </section>
+
+        <section class="panel raw-panel view-page hidden" data-view="raw">
+          <div class="section-title">
+            <h2 data-i18n="rawTitle">Raw Data</h2>
+            <button id="copyRawBtn" type="button" data-i18n="copyRaw">Copy</button>
+          </div>
+          <div class="raw-tabs">
+            <button class="raw-tab active" type="button" data-raw-target="analysis" data-i18n="rawAnalysis">Current analysis</button>
+            <button class="raw-tab" type="button" data-raw-target="cases" data-i18n="rawCases">Cases</button>
+            <button class="raw-tab" type="button" data-raw-target="caseDetail" data-i18n="rawCaseDetail">Selected case</button>
+            <button class="raw-tab" type="button" data-raw-target="history" data-i18n="rawHistory">History</button>
+          </div>
+          <pre id="rawData" class="raw-data" data-i18n="rawEmpty">Run an analysis or select a case to view raw JSON here.</pre>
+        </section>
+
+        <section class="panel history-panel view-page hidden" data-view="history">
+          <div class="section-title">
+            <h2 data-i18n="historyTitle">Analysis History</h2>
+            <button id="refreshHistoryBtn" type="button" data-i18n="refreshHistory">Refresh</button>
+          </div>
+          <div id="historyList" class="history-list empty" data-i18n="historyEmpty">No previous analyses yet.</div>
+        </section>
+      </section>
+    </main>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>
